@@ -91,7 +91,7 @@ public class FileListAdapter extends BaseAdapter {
             } else {
                 holder.type_icon.setColorFilter(context.getResources().getColor(R.color.colorAccent));
             }
-            if (properties.selection_type == DialogConfigs.DIR_SELECT) {
+            if (properties.selection_type == DialogConfigs.DIR_SELECT||properties.selection_mode == DialogConfigs.SINGLE_MODE) {
                 holder.fmark.setVisibility(View.INVISIBLE);
             } else {
                 holder.fmark.setVisibility(View.VISIBLE);
