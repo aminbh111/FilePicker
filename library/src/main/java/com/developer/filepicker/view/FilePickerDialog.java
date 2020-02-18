@@ -317,6 +317,7 @@ public class FilePickerDialog extends Dialog implements AdapterView.OnItemClickL
                             item.setTime(temp.lastModified());
                             item.setLocation(temp.getAbsolutePath());
                             MarkedItemList.addSelectedItem(item);
+                            select.performClick();
                         }
                         break;
 
@@ -358,6 +359,7 @@ public class FilePickerDialog extends Dialog implements AdapterView.OnItemClickL
                                 item.setTime(temp.lastModified());
                                 item.setLocation(temp.getAbsolutePath());
                                 MarkedItemList.addSelectedItem(item);
+                                select.performClick();
                             }
                             break;
 
