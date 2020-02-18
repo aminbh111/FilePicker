@@ -248,6 +248,7 @@ public class FilePickerDialog extends Dialog implements AdapterView.OnItemClickL
             } else {
                 MaterialCheckbox fmark = view.findViewById(R.id.file_mark);
                 fmark.performClick();
+                select.performClick();
             }
         }
     }
