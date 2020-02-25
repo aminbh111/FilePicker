@@ -18,4 +18,5 @@ public abstract class DialogConfigs {
      *  mount point.
      */
     public static final String DEFAULT_DIR = DIRECTORY_SEPERATOR + STORAGE_DIR;
+    public static final String STORAGES_DIR = "STORAGES_DIR";
 }

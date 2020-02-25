@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -30,6 +31,9 @@ import com.developer.filepicker.widget.MaterialCheckbox;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.developer.filepicker.model.DialogConfigs.STORAGES_DIR;
+import static com.developer.filepicker.utils.Utility.getExternalStorageWritable;
 
 /**
  * @author akshay sunil masram
@@ -104,6 +108,7 @@ public class FilePickerDialog extends Dialog implements AdapterView.OnItemClickL
             @Override
             public void onClick(View view) {
                 String[] paths = MarkedItemList.getSelectedPaths();
+
                 if (callbacks != null) {
                     callbacks.onSelectedFilePaths(paths);
                 }
@@ -209,11 +214,15 @@ public class FilePickerDialog extends Dialog implements AdapterView.OnItemClickL
             dname.setText(currLoc.getName());
             dir_path.setText(currLoc.getAbsolutePath());
             setTitle();
+            if(properties.offset.getPath().equalsIgnoreCase("/mnt")) {
+                internalList = getExternalStorageWritable(internalList);
+            }
             internalList = Utility.prepareFileListEntries(internalList, currLoc, filter, properties.show_hidden_files);
             mFileListAdapter.notifyDataSetChanged();
             listView.setOnItemClickListener(this);
         }
     }
+
 
     private boolean validateOffsetPath() {
         String offset_path = properties.offset.getAbsolutePath();
@@ -417,6 +426,11 @@ public class FilePickerDialog extends Dialog implements AdapterView.OnItemClickL
                 dname.setText(currLoc.getName());
                 dir_path.setText(currLoc.getAbsolutePath());
                 internalList.clear();
+                System.out.println("currLoc.getName() = " + currLoc.getName());
+                if(currLoc.getName().equals("storage")){
+                    dir_path.setText("");
+                    currLoc=new File("/mnt");
+                }
                 if (!currLoc.getName().equals(properties.root.getName())) {
                     FileListItem parent = new FileListItem();
                     parent.setFilename(context.getString(R.string.label_parent_dir));
@@ -424,6 +438,9 @@ public class FilePickerDialog extends Dialog implements AdapterView.OnItemClickL
                     parent.setLocation(currLoc.getParentFile().getAbsolutePath());
                     parent.setTime(currLoc.lastModified());
                     internalList.add(parent);
+                }
+                if(currLoc.getPath().equalsIgnoreCase("/mnt")) {
+                    internalList = getExternalStorageWritable(internalList);
                 }
                 internalList = Utility.prepareFileListEntries(internalList, currLoc, filter, properties.show_hidden_files);
                 mFileListAdapter.notifyDataSetChanged();

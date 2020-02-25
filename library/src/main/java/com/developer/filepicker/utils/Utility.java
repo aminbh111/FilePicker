@@ -2,6 +2,7 @@ package com.developer.filepicker.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 
 import com.developer.filepicker.model.FileListItem;
 
@@ -44,6 +45,37 @@ public class Utility {
             e.printStackTrace();
             internalList=new ArrayList<>();
         }
+        return internalList;
+    }
+    public static ArrayList<FileListItem> getExternalStorageWritable(ArrayList<FileListItem> internalList) {
+        File fileList[] = new File("/storage/").listFiles();
+        String strRet = "";
+
+        for (File file : fileList) {
+            if (file.getAbsolutePath().toLowerCase().contains("emulated")) {
+                continue;
+            }
+
+            if (file.getAbsolutePath().toLowerCase().contains("usb")) {
+                continue;
+            }
+
+            if (file.getAbsolutePath().equals("/storage/self")) {
+                continue;
+            }
+
+            if(!file.getAbsolutePath().equalsIgnoreCase(Environment.getExternalStorageDirectory().getAbsolutePath()) &&
+                    file.isDirectory() && file.canRead())
+                strRet = file.getAbsolutePath();
+            if(file.getName().startsWith(".") ) continue;
+            FileListItem item = new FileListItem();
+            item.setFilename(file.getName());
+            item.setDirectory(file.isDirectory());
+            item.setLocation(file.getAbsolutePath());
+            item.setTime(file.lastModified());
+            internalList.add(item);
+        }
+
         return internalList;
     }
 
