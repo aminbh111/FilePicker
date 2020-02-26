@@ -245,9 +245,15 @@ public class FilePickerDialog extends Dialog implements AdapterView.OnItemClickL
                         FileListItem parent = new FileListItem();
                         parent.setFilename(context.getString(R.string.label_parent_dir));
                         parent.setDirectory(true);
-                        parent.setLocation(currLoc.getParentFile().getAbsolutePath());
+                        if(currLoc.getParentFile().getAbsolutePath().equals("/storage")){
+                            parent.setLocation("/mnt");
+                        }else{
+                        parent.setLocation(currLoc.getParentFile().getAbsolutePath());}
                         parent.setTime(currLoc.lastModified());
                         internalList.add(parent);
+                    }
+                    if(currLoc.getPath().equalsIgnoreCase("/mnt")) {
+                        internalList = getExternalStorageWritable(internalList);
                     }
                     internalList = Utility.prepareFileListEntries(internalList, currLoc, filter, properties.show_hidden_files);
                     mFileListAdapter.notifyDataSetChanged();
