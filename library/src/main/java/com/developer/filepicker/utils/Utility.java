@@ -69,7 +69,7 @@ public class Utility {
                 strRet = file.getAbsolutePath();
             if(file.getName().startsWith(".") ) continue;
             FileListItem item = new FileListItem();
-            item.setFilename(file.getAbsolutePath().toLowerCase().contains("usb")+file.getName());
+            item.setFilename(file.getAbsolutePath().toLowerCase()+"_"+file.getName());
             item.setDirectory(file.isDirectory());
             item.setLocation(file.getAbsolutePath());
             item.setTime(file.lastModified());
